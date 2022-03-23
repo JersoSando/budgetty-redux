@@ -7,14 +7,18 @@ import DisplayPurchases from './../shared/DisplayPurchases';
 import Loading from './../shared/Loading/Loading';
 import Nav from './../shared/Nav';
 import './Budget.css';
-
+import { connect } from 'react-redux'
+import * as actions from '../../redux/budgetReducer'
 
 class Budget extends Component {
 
   render() {
+    const {loading} = this.props.budget
+    console.log(this.props)
+
     return (
       <Background>
-        {true ? <Loading /> : null}
+        {loading ? <Loading /> : null}
         <div className='budget-container'>
           <Nav />
           <div className='content-container'>
@@ -33,4 +37,20 @@ class Budget extends Component {
   }
 }
 
-export default Budget;
+const mapStatetoProps = (state) => {
+  return {
+    budget: state.budget 
+  }
+}
+const mapDispatchToState = (dispatch) => {
+ return {
+  setLoadingTrue: () => dispatch(actions.setLoadingTrue()),
+  setLoadingFalse: () => dispatch(actions.setLoadingFalse()),
+
+ }
+}
+export default connect(mapStatetoProps, mapDispatchToState)(Budget);
+
+{/* <connect mapsStateToProps={(state) => mapStatetoProps(state)}>
+  <Budget budget={state.budget} />
+</connect> */}
